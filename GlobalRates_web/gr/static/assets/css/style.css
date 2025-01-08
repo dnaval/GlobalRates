@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+.container {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    grid-template-columns: 1fr;
+    min-height: 100vh;
+}
+header {
+    background-color: #7d96ad;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 10px;
+}
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 1rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.tabs {
+    display: flex;
+    cursor: pointer;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ccc;
+}
+.tab {
+    padding: 10px 20px;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background: #f9f9f9;
+}
+.tab.active {
+    background: #7d96ad;
+    border-bottom: 2px solid #fff;
+}
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}

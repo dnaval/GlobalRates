@@ -1,0 +1,28 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Copy the cron job files into the container
+COPY ./GlobalRates_script /app/cron
+
+RUN apt-get update && apt-get install -y cron && apt-get clean \
+    && pip install --no-cache-dir -r /app/cron/requirements.txt
+
+# Set up the cron job
+COPY ./GlobalRates_script/crontab /etc/cron.d/my-cron-job
+
+#Clean up cronjob file
+RUN apt-get update && apt-get install -y dos2unix
+RUN dos2unix /etc/cron.d/my-cron-job
+
+# Set permissions for the cron job file
+RUN chmod 0644 /etc/cron.d/my-cron-job
+
+# Apply the cron job
+RUN crontab /etc/cron.d/my-cron-job
+
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
+
+# Start cron in the foreground
+CMD ["cron", "-f"]

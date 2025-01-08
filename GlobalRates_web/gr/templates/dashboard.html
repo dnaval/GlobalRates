@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Rates - DNAVALDEV</title>
+    <!-- Favicons -->
+    <link href="{{ url_for('static', filename='img/favicon.png') }}" rel="icon">
+    <link href="{{ url_for('static', filename='img/favicon.png') }}" rel="apple-touch-icon">
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include DataTables CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <!-- Template Main CSS File -->
+    <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo">
+      <div class="title">Global Rates for {{year}}</div>
+  </header>
+    <div class="tabs">
+        <div class="tab active" data-tab="table1">Euribor</div>
+        <div class="tab" data-tab="table2">Saron</div>
+        <div class="tab" data-tab="table3">Sofr</div>
+        <div class="tab" data-tab="table4">Sonia</div>
+    </div>
+
+    <div class="tab-contents">
+        <div id="table1" class="tab-content active">
+            <table id="datatable1" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>First</th>
+                        <th>Last</th>
+                        <th>High</th>
+                        <th>Low</th>
+                        <th>Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row1 in euribor %}
+                      <tr>
+                        <td>{{row1.month}}</td>
+                        <td>{{row1.first}}</td>
+                        <td>{{row1.last}}</td>
+                        <td>{{row1.high}}</td>
+                        <td>{{row1.low}}</td>
+                        <td>{{row1.average}}</td>
+                      </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="table2" class="tab-content">
+            <table id="datatable2" class="display" style="width:100%">
+              <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>High</th>
+                    <th>Low</th>
+                    <th>Average</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row2 in saron %}
+                  <tr>
+                    <td>{{row2.month}}</td>
+                    <td>{{row2.first}}</td>
+                    <td>{{row2.last}}</td>
+                    <td>{{row2.high}}</td>
+                    <td>{{row2.low}}</td>
+                    <td>{{row2.average}}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div id="table3" class="tab-content">
+            <table id="datatable3" class="display" style="width:100%">
+              <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>High</th>
+                    <th>Low</th>
+                    <th>Average</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row3 in sofr %}
+                  <tr>
+                    <td>{{row3.month}}</td>
+                    <td>{{row3.first}}</td>
+                    <td>{{row3.last}}</td>
+                    <td>{{row3.high}}</td>
+                    <td>{{row3.low}}</td>
+                    <td>{{row3.average}}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        <div id="table4" class="tab-content">
+            <table id="datatable4" class="display" style="width:100%">
+              <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>High</th>
+                    <th>Low</th>
+                    <th>Average</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row4 in sonia %}
+                  <tr>
+                    <td>{{row4.month}}</td>
+                    <td>{{row4.first}}</td>
+                    <td>{{row4.last}}</td>
+                    <td>{{row4.high}}</td>
+                    <td>{{row4.low}}</td>
+                    <td>{{row4.average}}</td>
+                  </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+<script>
+    $(document).ready(function () {
+        // Initialize DataTables
+        $('#datatable1').DataTable({
+            searching: true,
+            ordering: false
+        });
+        $('#datatable2').DataTable({
+            searching: true,
+            ordering: false
+        });
+        $('#datatable3').DataTable({
+            searching: true,
+            ordering: false
+        });
+        $('#datatable4').DataTable({
+            searching: true,
+            ordering: false
+        });
+
+        // Tab functionality
+        $('.tab').on('click', function () {
+            var target = $(this).data('tab');
+
+            // Handle tab switching
+            $('.tab').removeClass('active');
+            $(this).addClass('active');
+
+            // Show the corresponding tab content
+            $('.tab-content').removeClass('active');
+            $('#' + target).addClass('active');
+        });
+    });
+</script>
+
+</body>
+</html>

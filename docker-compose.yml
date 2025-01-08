@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./GlobalRates_sql/db-init.sql:/docker-entrypoint-initdb.d/db-init.sql:ro
+
+  cronjob:
+    build:
+      context: .
+      dockerfile: dockerfile.cron
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - year=${year}
+      - euribor_url=${euribor_url}
+      - saron_url=${saron_url}
+      - sofr_url=${sofr_url}
+      - sonia_url=${sonia_url}
+    volumes:
+      - ./GlobalRates_script:/app/cron
+
+  flask:
+    build:
+      context: .
+      dockerfile: dockerfile.flask
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - FLASK_APP=app.py
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    volumes:
+      - ./GlobalRates_web:/app
+
+volumes:
+  db_data:
